@@ -11,12 +11,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MultithreadedClient {
 
   private static int TOTAL_REQUESTS = 200000;
-  // (Original Configuration):
-  private static int ORIGINAL_THREADS = 32;
-  private static int REQUESTS_PER_THREAD = 1000;
-  // (Optimized Configuration):
-  private static final int OPTIMAL_THREADS = 160;  // 4x Phase 1 thread count
-  private static final int OPTIMAL_REQUESTS_PER_THREAD = 1050;  // Smaller chunks for better distribution
+  // Threads Configurations:
+  private static int ORIGINAL_THREADS = 200;
+  private static int REQUESTS_PER_THREAD = 100;
 
   public static void main(String[] args) {
     System.out.println("Starting client...");
@@ -40,11 +37,11 @@ public class MultithreadedClient {
     long startTime = System.currentTimeMillis();
 
     ThreadPoolExecutor executor = new ThreadPoolExecutor(
-        OPTIMAL_THREADS,
-        OPTIMAL_THREADS,
+        ORIGINAL_THREADS,
+        ORIGINAL_THREADS,
         5000L,
         TimeUnit.MILLISECONDS,
-        new LinkedBlockingQueue<>(OPTIMAL_REQUESTS_PER_THREAD * OPTIMAL_THREADS),
+        new LinkedBlockingQueue<>(REQUESTS_PER_THREAD * ORIGINAL_THREADS),
         new ThreadPoolExecutor.CallerRunsPolicy()
     );
     System.out.println("Thread pool executor created");
@@ -53,13 +50,13 @@ public class MultithreadedClient {
     AtomicInteger successfulRequests = new AtomicInteger(0);
     AtomicInteger failedRequests = new AtomicInteger(0);
 
-    System.out.println("Creating " + (TOTAL_REQUESTS / OPTIMAL_REQUESTS_PER_THREAD) + " tasks");
+    System.out.println("Creating " + (TOTAL_REQUESTS / REQUESTS_PER_THREAD) + " tasks");
 
     // Use the shared queue for all PostingSkiInfo tasks
-    for (int i = 0; i < TOTAL_REQUESTS / OPTIMAL_REQUESTS_PER_THREAD; i++) {
+    for (int i = 0; i < TOTAL_REQUESTS / REQUESTS_PER_THREAD; i++) {
       executor.execute(new PostingSkiInfo(
           sharedQueue,  // Use the shared queue
-          OPTIMAL_REQUESTS_PER_THREAD,
+          REQUESTS_PER_THREAD,
           successfulRequests,
           failedRequests,
           countDownLatch

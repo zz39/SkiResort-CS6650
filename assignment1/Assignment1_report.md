@@ -1,5 +1,7 @@
 # Ski Resort Client Documentation
 
+GitHub Repo: https://github.com/zz39/SkiResort-CS6650
+
 ## Configuration
 
 ### Server Configurations
@@ -34,7 +36,6 @@ javac MultithreadedClient.java
 java MultithreadedClient
 ```
 
-
 ## Design Documentation
 
 ### Client Design Overview
@@ -61,67 +62,51 @@ The client implements a multi-threaded architecture to efficiently send POST req
    - Manages request success/failure tracking
 
 ### Thread Safety Considerations
-1. Shared Resources:
-   - BlockingQueue for event distribution
-   - AtomicInteger for request counting
-   - Synchronized lists for metrics collection
-
-2. Synchronization Mechanisms:
-   - CountDownLatch for phase coordination
-   - ThreadPoolExecutor for thread management
-   - Thread-safe collections for metrics
+- Uses `BlockingQueue` for safe event distribution
+- Atomic counters track successful/failed requests
+- CountDownLatch ensures phase synchronization
 
 ### Threading Strategy
 - Phase 1: 32 threads × 1000 requests = 32,000 requests
 - Phase 2: 100 threads × ~1680 requests = 168,000 requests
-- Uses ThreadPoolExecutor for managed thread lifecycle
-- Implements CountDownLatch for synchronization
-
-### Error Handling
-- Implements 5 retry attempts for failed requests
-- Captures and logs all exceptions
-- Records failed requests separately
-- Maintains system stability during errors
+- ThreadPoolExecutor manages execution
 
 ### Performance Analysis
 
-#### Little's Law Calculations
-Little's Law states: L = λW
-- L = Average number of requests in system
-- λ = Average arrival rate (throughput)
-- W = Average time spent in system
-
-From our metrics:
-- W (Average response time) = 98.61 ms
-- λ (Measured throughput) = 291.57 requests/second
-- L (Calculated) = 291.57 * 0.09861 ≈ 29 concurrent requests
-
-Theoretical maximum throughput:
-- Given 32 threads in Phase 1
-- Average response time of 98.61 ms
-- Maximum theoretical throughput = 32/0.09861 ≈ 324 requests/second
-
-Our achieved throughput (291.57 req/sec) is about 90% of theoretical maximum, indicating efficient resource utilization.
-
-### Current Performance Metrics
-- Success Rate: 100% (200,000/200,000 requests)
+#### 32-100 Thread Approach
+- Success Rate: 100%
 - Mean Response Time: 98.61 ms
-- Median Response Time: 96 ms
 - 99th Percentile: 190 ms
 - Throughput: 291.57 requests/second
 
+#### Experiment: 200 Threads × 100 Requests
+- Success Rate: 100%
+- Mean Response Time: 98.0 ms
+- 99th Percentile: 196 ms
+- Throughput: 1946.03 requests/second
+
+#### Key Insights
+- Increasing threads to 200 significantly boosted throughput (~6.6x improvement).
+- Response times remained stable, indicating efficient concurrency handling.
+- The setup effectively balances performance and resource utilization.
+
 ### Client Outputs
-**Client-1**
+**Client-1 (initial configuration)**
 
 ![Client 1 output](./assets/client-1-output.png)
--
-**Client-2**
+
+**Client-2 (initial configuration)**
 
 ![Client 2 output](./assets/client-2-output.png)
+
+**Client-2 (optimized configuration)**
+
+![Client 2 output - optimized](./assets/client-2-output-experiment.png)
 
 ### RESTful API Screenshots
 To show clients actually send requests to the server on EC2 instance - using Postman testing page showing URL
 
 ![Postman get](./assets/get.png)
-`
+
 ![Postman post](./assets/post.png)
+

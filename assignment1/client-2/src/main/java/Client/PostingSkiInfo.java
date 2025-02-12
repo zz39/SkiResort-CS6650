@@ -40,17 +40,20 @@ public class PostingSkiInfo implements Runnable {
 
   @Override
   public void run() {
-    System.out.println("Starting PostingSkiInfo thread");  // Debug log 10
+    System.out.println("Starting PostingSkiInfo thread");
     SkiersApi skiersApi = createApiClient();
 
     for (int i = 0; i < numRequests; i++) {
-      LiftRide liftRide = queue.poll();
-      if (liftRide == null) {
-        System.out.println("No lift ride available in queue");  // Debug log 11
-        break;
+      LiftRide liftRide;
+      try {
+        liftRide = queue.take();  // Blocking until an item is available
+      } catch (InterruptedException e) {
+        System.out.println("Thread interrupted while waiting for queue");
+        Thread.currentThread().interrupt();
+        return;
       }
 
-      System.out.println("Processing request " + (i + 1));  // Debug log 12
+      System.out.println("Processing request " + (i + 1));
       boolean success = false;
       int retries = 0;
 
@@ -60,45 +63,43 @@ public class PostingSkiInfo implements Runnable {
           ApiResponse<Void> apiResponse = skiersApi.writeNewLiftRideWithHttpInfo(
               liftRide, random.nextInt(RESORT_ID_RANGE) + 1, SEASON_ID, DAY_ID, random.nextInt(SKIER_ID_RANGE) + 1
           );
-          System.out.println("Request completed with status: " + apiResponse.getStatusCode());  // Debug log 13
 
           long endTime = System.currentTimeMillis();
           long latency = endTime - startTime;
 
-          // Record latency and response code
           latencies.add(latency);
           requestLogs.add(startTime + ",POST," + latency + "," + apiResponse.getStatusCode());
 
           if (apiResponse.getStatusCode() == 201) {
             successfulRequests.incrementAndGet();
             success = true;
-          } else if (apiResponse.getStatusCode() == 400) {
+          } else {
             retries++;
           }
         } catch (ApiException e) {
-          System.err.println("API Exception: " + e.getMessage());  // Debug log 14
+          System.err.println("API Exception: " + e.getMessage());
 
           long endTime = System.currentTimeMillis();
           long latency = endTime - startTime;
           latencies.add(latency);
           requestLogs.add(startTime + ",POST," + latency + ",ERROR");
 
-          System.err.println("Exception: " + liftRide);
-          e.printStackTrace();
-
-        } finally {
-          count.countDown();
+          retries++;
         }
       }
-      if (!success) {
+
+      if (success) {
+        count.countDown();
+      } else {
         failedRequests.incrementAndGet();
+        count.countDown();
       }
     }
   }
 
   private SkiersApi createApiClient() {
     ApiClient apiClient = new ApiClient();
-    apiClient.setBasePath("http://3.84.49.179:8080/Assignment1/");
+    apiClient.setBasePath("http://107.23.18.223:8080/Assignment1/");
     return new SkiersApi(apiClient);
   }
 
