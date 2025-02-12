@@ -25,12 +25,12 @@ private SkiersApi createApiClient() {
 2. Adjust thread (Optional) and request settings in `MultithreadedClient.java`:
 ```java
 // example:
-private static final int INITIAL_THREADS = 32;        // Phase 1 threads
-private static final int PHASE2_THREADS = 100;        // Phase 2 threads
-private static final int TOTAL_REQUESTS = 200000;    // Total requests to send
+  private static int TOTAL_REQUESTS = 200000;
+  private static int ORIGINAL_THREADS = 32;
+  private static int REQUESTS_PER_THREAD = 1000;
 ```
 
-3. Simply run `MultithreadedClient.java`:
+3. run `MultithreadedClient.java`:
 ```bash
 javac MultithreadedClient.java
 java MultithreadedClient
