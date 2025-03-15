@@ -4,23 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="bef69c38-cdc1-43da-9ffd-b04262d45186" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/demo_spring/src/main/java/com/skiresort/demo/YourController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="118ea8f5-0d1b-4764-b415-17a28cf4b3e5" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 1
-}</component>
-  <component name="ProjectId" id="2sn7biVCecRFLyqYBtiMjwSCF7b" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2tFWn4xUwaoRkrfGSMurEQAl1EF" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -31,13 +27,12 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "/Users/wayne/GitHub/SkiResort/assignment1",
+    "last_opened_file_path": "/Users/wayne/GitHub/SkiResort",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -52,14 +47,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="bef69c38-cdc1-43da-9ffd-b04262d45186" name="Changes" comment="" />
-      <created>1739079558865</created>
+      <changelist id="118ea8f5-0d1b-4764-b415-17a28cf4b3e5" name="Changes" comment="" />
+      <created>1739948466618</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1739079558865</updated>
-      <workItem from="1739079560157" duration="30000" />
-      <workItem from="1741554335826" duration="777000" />
-      <workItem from="1741898327651" duration="895000" />
+      <updated>1739948466618</updated>
+      <workItem from="1739948467814" duration="2409000" />
     </task>
     <servers />
   </component>

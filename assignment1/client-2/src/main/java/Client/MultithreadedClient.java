@@ -10,10 +10,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MultithreadedClient {
 
-  private static int TOTAL_REQUESTS = 200000;
+  private static int TOTAL_REQUESTS = 100;
   // Threads Configurations:
-  private static int ORIGINAL_THREADS = 200;
-  private static int REQUESTS_PER_THREAD = 100;
+  private static int ORIGINAL_THREADS = 5;
+  private static int REQUESTS_PER_THREAD = 10;
 
   public static void main(String[] args) {
     System.out.println("Starting client...");
