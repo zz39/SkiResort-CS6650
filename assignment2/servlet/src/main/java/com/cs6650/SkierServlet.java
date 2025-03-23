@@ -7,19 +7,19 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
-import com.rabbitmq.client.Channel;
-import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
+import com.rabbitmq.client.*;
 
 @WebServlet("/skiers/*")
 public class SkierServlet extends HttpServlet {
 
   private final static String QUEUE_NAME = "SkierQueue";
-  private static ConnectionFactory factory = new ConnectionFactory();
+  private static final String RABBITMQ_HOST = "13.216.71.149"; // Elastic IP of RabbitMQ EC2
   private static final int CHANNEL_POOL_SIZE = 120;
+  private static ConnectionFactory factory = new ConnectionFactory();
+  private static Connection connection;
   private static final BlockingQueue<Channel> channelPool = new LinkedBlockingQueue<>(CHANNEL_POOL_SIZE);
 
-  static { initializeChannelPool();}
+  static { initializeChannelPool(); }
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException {
@@ -28,7 +28,6 @@ public class SkierServlet extends HttpServlet {
     String urlPath = req.getPathInfo();
     System.out.println(urlPath);
 
-    // check we have a URL!
     if (urlPath == null || urlPath.isEmpty()) {
       res.setStatus(HttpServletResponse.SC_NOT_FOUND);
       res.getWriter().write("missing parameters");
@@ -37,7 +36,7 @@ public class SkierServlet extends HttpServlet {
 
     String[] urlParts = urlPath.split("/");
 
-    if (!isUrlValid(urlParts, false)) {
+    if (!isUrlValid(urlParts, true)) {
       res.setStatus(HttpServletResponse.SC_NOT_FOUND);
     } else {
       res.setStatus(HttpServletResponse.SC_OK);
@@ -45,21 +44,17 @@ public class SkierServlet extends HttpServlet {
     }
   }
 
-  private boolean isUrlValid(String[] urlPath, Boolean get) {
-    if (get) {
-      return true;
-    }
+  private boolean isUrlValid(String[] urlPath, boolean isGet) {
+    if (isGet) return true;
 
-    if (urlPath.length < 6) {  // Ensure sufficient elements exist
-      return false;
-    }
+    if (urlPath.length < 6) return false;
 
     try {
       Integer.parseInt(urlPath[1]);
       Integer.parseInt(urlPath[3]);
       Integer.parseInt(urlPath[5]);
       return true;
-    } catch(NumberFormatException e) {
+    } catch (NumberFormatException e) {
       return false;
     }
   }
@@ -70,7 +65,6 @@ public class SkierServlet extends HttpServlet {
     res.setCharacterEncoding("UTF-8");
     String urlPath = req.getPathInfo();
 
-    // check we have a URL!
     if (urlPath == null || urlPath.isEmpty()) {
       res.setStatus(HttpServletResponse.SC_NOT_FOUND);
       res.getWriter().write("missing parameters");
@@ -82,7 +76,7 @@ public class SkierServlet extends HttpServlet {
     if (!isUrlValid(urlParts, false)) {
       res.setStatus(HttpServletResponse.SC_NOT_FOUND);
     } else {
-      String body = String.valueOf(req.getReader().lines().collect(Collectors.joining()));
+      String body = req.getReader().lines().collect(Collectors.joining());
       if (body.isEmpty()) {
         res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       } else {
@@ -90,55 +84,58 @@ public class SkierServlet extends HttpServlet {
         String message = packageMessage(body, skierID);
 
         // Send data to RabbitMQ message queue
-        sendToMessageQueue(message);
-        res.setStatus(HttpServletResponse.SC_CREATED);
-        res.getWriter().write("POST ok!");
+        boolean success = sendToMessageQueue(message);
+        if (success) {
+          res.setStatus(HttpServletResponse.SC_CREATED);
+          res.getWriter().write("POST ok!");
+        } else {
+          res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+          res.getWriter().write("Failed to send message to queue");
+        }
       }
     }
   }
 
   private static void initializeChannelPool() {
-    factory.setHost("34.225.55.133"); // Elastic EC2 Public IP
+    factory.setHost(RABBITMQ_HOST);
     try {
-      Connection connection = factory.newConnection();
+      connection = factory.newConnection();
+      Channel setupChannel = connection.createChannel();
+      setupChannel.queueDeclare(QUEUE_NAME, true, false, false, null); // Durable queue
+      setupChannel.close();
+
       for (int i = 0; i < CHANNEL_POOL_SIZE; i++) {
         Channel channel = connection.createChannel();
-        channel.queueDeclare(QUEUE_NAME, false, false, false, null);
         channelPool.add(channel);
       }
     } catch (IOException | TimeoutException e) {
-      throw new RuntimeException(e);
+      throw new RuntimeException("Failed to initialize RabbitMQ channel pool", e);
     }
   }
 
-  // Package liftRide with skierID in JSON
   private String packageMessage(String body, String skierID) {
     return "{\"body\":" + body + ", \"skierID\":\"" + skierID + "\"}";
   }
 
-  private void sendToMessageQueue(String message) {
-    Channel channel = channelPool.poll();
-    if (channel == null) {
-      System.err.println("No available RabbitMQ channel in pool!");
-      return;
-    }
+  private boolean sendToMessageQueue(String message) {
+    Channel channel = null;
     try {
+      channel = channelPool.poll();
+      if (channel == null) {
+        System.err.println("No available channel in pool!");
+        return false;
+      }
+
       channel.basicPublish("", QUEUE_NAME, null, message.getBytes());
       System.out.println(" [x] Sent '" + message + "'");
-    } catch (IOException e) {
-      throw new RuntimeException("Failed to send message to RabbitMQ", e);
-    } finally {
-      channelPool.offer(channel); // Return channel to the pool safely
-    }
-  }
+      return true;
 
-  @Override
-  public void destroy() {
-    for (Channel channel : channelPool) {
-      try {
-        channel.close();
-      } catch (IOException | TimeoutException e) {
-        System.err.println("Failed to close channel: " + e.getMessage());
+    } catch (IOException e) {
+      System.err.println("Failed to send message to queue: " + e.getMessage());
+      return false;
+    } finally {
+      if (channel != null) {
+        channelPool.offer(channel); // Return channel to pool
       }
     }
   }

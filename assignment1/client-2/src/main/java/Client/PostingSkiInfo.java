@@ -78,7 +78,11 @@ public class PostingSkiInfo implements Runnable {
           }
         } catch (ApiException e) {
           System.err.println("API Exception: " + e.getMessage());
-
+          System.err.println("Response Code: " + e.getCode());
+          System.err.println("Response Body: " + e.getResponseBody());
+          if (e.getCause() != null) {
+            System.err.println("Cause: " + e.getCause());
+          }
           long endTime = System.currentTimeMillis();
           long latency = endTime - startTime;
           latencies.add(latency);
@@ -99,7 +103,7 @@ public class PostingSkiInfo implements Runnable {
 
   private SkiersApi createApiClient() {
     ApiClient apiClient = new ApiClient();
-    apiClient.setBasePath("http://44.203.193.245:8080/Assignment1/");
+    apiClient.setBasePath("http://34.225.55.133:8080/Assignment2/");
     return new SkiersApi(apiClient);
   }
 

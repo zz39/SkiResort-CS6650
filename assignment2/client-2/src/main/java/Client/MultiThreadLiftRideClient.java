@@ -11,8 +11,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class MultiThreadLiftRideClient {
     private static int TOTAL_REQUESTS = 200000;
-    private static int INITIAL_THREADS = 15;
-    private static int REQUESTS_PER_THREAD = 1000;
+    private static int INITIAL_THREADS = 100;
+    private static int REQUESTS_PER_THREAD = 2000;
 
     private static BlockingQueue<LiftRide> GeneratorQueue = new LinkedBlockingQueue<>(TOTAL_REQUESTS);
     private static AtomicInteger successfulRequests = new AtomicInteger(0);

@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="118ea8f5-0d1b-4764-b415-17a28cf4b3e5" name="Changes" comment="" />
+    <list default="true" id="118ea8f5-0d1b-4764-b415-17a28cf4b3e5" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/assignment1/client-2/latencies.csv" beforeDir="false" afterPath="$PROJECT_DIR$/assignment1/client-2/latencies.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment1/client-2/src/main/java/Client/MultithreadedClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/assignment1/client-2/src/main/java/Client/MultithreadedClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment1/client-2/src/main/java/Client/PostingSkiInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/assignment1/client-2/src/main/java/Client/PostingSkiInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment2/Consumer/src/main/java/Consumer/LiftRideConsumer.java" beforeDir="false" afterPath="$PROJECT_DIR$/assignment2/Consumer/src/main/java/Consumer/LiftRideConsumer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment2/servlet/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/assignment2/servlet/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assignment2/servlet/src/main/java/com/cs6650/SkierServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/assignment2/servlet/src/main/java/com/cs6650/SkierServlet.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,9 +20,9 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2tFWn4xUwaoRkrfGSMurEQAl1EF" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -33,6 +40,10 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.lookFeel",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -53,6 +64,7 @@
       <option name="presentableId" value="Default" />
       <updated>1739948466618</updated>
       <workItem from="1739948467814" duration="2409000" />
+      <workItem from="1742608954050" duration="4666000" />
     </task>
     <servers />
   </component>
