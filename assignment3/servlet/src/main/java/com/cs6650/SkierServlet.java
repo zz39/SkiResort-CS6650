@@ -87,8 +87,11 @@ public class SkierServlet extends HttpServlet {
       if (body.isEmpty()) {
         res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
       } else {
+        String resortID = urlParts[1];
+        String seasonID = urlParts[3];
+        String dayID = urlParts[5];
         String skierID = urlParts[urlParts.length - 1];
-        String message = packageMessage(body, skierID);
+        String message = packageMessage(body, resortID, seasonID, dayID, skierID);
 
         // Send data to RabbitMQ message queue
         boolean success = sendToMessageQueue(message);
@@ -120,8 +123,14 @@ public class SkierServlet extends HttpServlet {
     }
   }
 
-  private String packageMessage(String body, String skierID) {
-    return "{\"body\":" + body + ", \"skierID\":\"" + skierID + "\"}";
+  private String packageMessage(String body, String resortID, String seasonID, String dayID, String skierID) {
+    StringBuilder sb = new StringBuilder();
+    sb.append("{\"body\":").append(body)
+        .append(", \"resortID\":\"").append(resortID).append("\"")
+        .append(", \"seasonID\":\"").append(seasonID).append("\"")
+        .append(", \"dayID\":\"").append(dayID).append("\"")
+        .append(", \"skierID\":\"").append(skierID).append("\"}");
+    return sb.toString();
   }
 
   private boolean sendToMessageQueue(String message) {

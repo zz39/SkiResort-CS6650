@@ -82,7 +82,7 @@ public class PostingSkiInfo implements Runnable {
 
   private SkiersApi createApiClient() {
     ApiClient apiClient = new ApiClient();
-    apiClient.setBasePath("http://34.225.55.133:8080/Assignment2/");
+    apiClient.setBasePath("http://34.225.55.133:8080/Assignment3/");
     return new SkiersApi(apiClient);
   }
 }
