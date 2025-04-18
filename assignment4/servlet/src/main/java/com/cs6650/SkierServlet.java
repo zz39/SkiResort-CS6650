@@ -43,9 +43,9 @@ public class SkierServlet extends HttpServlet {
     try {
       // For AWS lab environment with temporary credentials
       AwsSessionCredentials sessionCredentials = AwsSessionCredentials.create(
-          "ASIAQXNPG4AF2IJL7TGB",
-          "aDOtZaetBrtQ9Gp3kDq8GcNjHX6Vpmk0WZmBp30P",
-          "IQoJb3JpZ2luX2VjEOf//////////wEaCXVzLXdlc3QtMiJHMEUCIQCrO52iXfumsHZeA4y/QZJ092DXXSRhTpiY1CHLgSNjmAIgULvDS5WOum0mW1Z0lEPGYpU3qjGlNMg9znt0HgwlxfsqpgIIcBAAGgwwNTAyOTY0NDY5ODciDB+Nde6HXm8X/48oWCqDAr4V49c3f0OOAfEJlNv8zt4ItZIfOZ6rRbsT0GLhjKd/r9uRMHnhIK6/rsQfQZ3to/CIOs/ZszLfx6iTVGAULd1uCUpMFz5FYenOXGN3goZkhCXph11X/D7tm8mIh2h9pumi4hDbVjkQpLEHTK63w9doiD7Ft2la8e1XZXpU7VASWotGX/bMJVICJ3LVI7fWVAVp60iE5v1oozhDBnqMTLH1/1XEVFPcH+zEVafA0mIgkYlPLDQY+/OBxBcFutGIH9KkwL0b2NBs4dRplzcBj2dKyV97tL6ZAGVPEjOjfxR9DzBbMnGoGu5LFbeB9J7W1VoBh2LoCFr15aaxvHvRU30/tJ8wvO2HwAY6nQHiAuuBmT4bkKNvMgbkm7GOyUIFOGa1zBm+ctuhyUwDWldbINyxjS0FxWostP4xxlZHSWmbpe1MmwjZNr1ST+qkmj1UbaY5By+4Z1dq8keqccy7nWn0WXdwDZ8g8ehxGmv2VzF7IS8srqbVFU24zyeUHTH3ViYo9fgl61Ot0LDCFGDCpkzQJ1Pl+XKc0H9iq+eWfX/3RmF7raUF4Zfd"
+          "",
+          "",
+          ""
       );
 
       dynamoDbClient = DynamoDbClient.builder()
