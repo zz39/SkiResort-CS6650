@@ -24,7 +24,7 @@ public class PostingSkiInfo implements Runnable {
   private static final int RESORT_ID = 1;
   private static final int SKIER_ID_RANGE = 100000;
   private static final String SEASON_ID = "2025";
-  private static final String DAY_ID = "3";
+  private static final String DAY_ID = "1";
 
   public PostingSkiInfo(BlockingQueue<LiftRide> queue, int numRequests,
       AtomicInteger successfulRequests, AtomicInteger failedRequests,

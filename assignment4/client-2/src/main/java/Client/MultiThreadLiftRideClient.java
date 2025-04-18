@@ -6,9 +6,9 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MultiThreadLiftRideClient {
-  private static final int TOTAL_REQUESTS = 50000;
+  private static final int TOTAL_REQUESTS = 200000;
   private static final int INITIAL_THREADS = 200;
-  private static final int REQUESTS_PER_THREAD = 500;
+  private static final int REQUESTS_PER_THREAD = 1000;
 
   private static final BlockingQueue<LiftRide> GeneratorQueue = new LinkedBlockingQueue<>(TOTAL_REQUESTS);
   private static final AtomicInteger successfulRequests = new AtomicInteger(0);
